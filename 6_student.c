@@ -1,39 +1,36 @@
-
-@file student.c
+/*@file student.c
  * @author Yerra Sri Harsha Vardhan 
  * @brief This project is used to maintain students recard digitally. And also to store student data safer for long time.
  * @version 0.1
- * @date 2021-11-17
-
+ * @date 2021-11-19*/
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <windows.h>
 
+
 struct student{
     char ID[15];
     char name[20];
+    
     char add[20];
     char parname[20];
     int Class;
     long unsigned int phone_no;
 };
-
 struct student stu;
+//This will set the forground color for printing in a console window.
 
-///This will set the forground color for printing in a console window.
 void SetColor(int ForgC)
 {
      WORD wColor;
-     ///We will need this handle to get the current background attribute
+     //We will need this handle to get the current background 
      HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
      CONSOLE_SCREEN_BUFFER_INFO csbi;
-
-     ///We use csbi for the wAttributes word.
      if(GetConsoleScreenBufferInfo(hStdOut, &csbi))
      {
-        ///Mask out all but the background attribute, and add in the forgournd color
+        //Mask out all but the background , and add in the forgournd color
           wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
           SetConsoleTextAttribute(hStdOut, wColor);
      }
@@ -42,23 +39,20 @@ void SetColor(int ForgC)
 
 void ClearConsoleToColors(int ForgC, int BackC)
 {
-     WORD wColor = ((BackC & 0x0F) << 4) + (ForgC & 0x0F);
-     ///Get the handle to the current output buffer...
-     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-     ///This is used to reset the carat/cursor to the top left.
+     WORD wColor = ((BackC & 0x0F) << 4) + (ForgC & 0x0F);//Get the handle to the current output buffer...
+     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);//This is used to reset the carat/cursor to the top left.
      COORD coord = {0, 0};
-     ///A return value... indicating how many chars were written
-     ///   not used but we need to capture this since it will be
-     ///   written anyway (passing NULL causes an access violation).
+     /*A return value... indicating how many chars were written
+      not used but we need to capture this since it will be*/
      DWORD count;
-     ///This is a structure containing all of the console info
-     /// it is used here to find the size of the console.
+     /*This is a structure containing all of the console info
+      it is used here to find the size of the console.*/
      CONSOLE_SCREEN_BUFFER_INFO csbi;
-     ///Here we will set the current color
+     //Here we will set the current color
      SetConsoleTextAttribute(hStdOut, wColor);
      if(GetConsoleScreenBufferInfo(hStdOut, &csbi))
      {
-          ///This fills the buffer with a given character (in this case 32=space).
+          //This fills the buffer with a given character 
           FillConsoleOutputCharacter(hStdOut, (TCHAR) 32, csbi.dwSize.X * csbi.dwSize.Y, coord, &count);
           FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, csbi.dwSize.X * csbi.dwSize.Y, coord, &count );
           ///This will set our cursor position for the next print statement.
@@ -73,10 +67,10 @@ void SetColorAndBackground(int ForgC, int BackC)
      SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), wColor);
      return;
 }
-
-COORD coord = {0,0}; ///set the cordinate to 0, 0 (top-left corner of window);
+ 
+COORD coord = {0,0}; 
 void gotoxy(int x, int y){
-    coord.X = x; coord.Y = y; /// X and Y coordinates
+    coord.X = x; coord.Y = y; // X and Y coordinates
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
@@ -132,7 +126,6 @@ void drawRectangle(){
         gotoxy(35,i);
         printf("%c",186);
     }
-
 }
 
 void clearWindow(){
@@ -144,58 +137,17 @@ void clearWindow(){
     }
     return;
 }
-
 void window(){
     drawRectangle();
     gotoxy(28,2);
     SetColor(35);
     printf("STUDENT RECORD SYSTEM");
     gotoxy(20,3);
-    printf("HARSHA");
+    printf("");
     gotoxy(31,4);
-    printf("Esta 55.");
+    printf("");
     gotoxy(25,24);
     SetColor(17);
-
-}
-
-void get_password(char* pass)
-{
-    char temp_passP[25];
-    int i=0;
-     while(1)
-    {
-            temp_passP[i]=getch();
-            if(temp_passP[i]==13){break;}
-            else if(temp_passP[i]==8)
-            {
-                if(i!=0) {
-                printf("\b \b");
-                i--;
-                } else {printf("\a");}
-            }
-            else
-            {
-                printf("*");
-                *(pass+i) = temp_passP[i];
-                i++;
-            }
-             *(pass+i)='\0';
-     }
-}
-
-void use_pass_field(){
-    int x = 15, y = 16;
-    int use;
-    char pass[10];
-    SetColor(10);
-    gotoxy(15,12);printf("The database is password protected.");
-    gotoxy(15,13);printf(" Enter Valid username and password");
-    SetColor(17);
-    gotoxy(20,x);printf("USERNAME:- ");
-    gotoxy(20,y);printf("PASSWORD:- ");
-    gotoxy(34,x);scanf("%d",use);
-    gotoxy(34,y);get_password(pass);
 }
 
 void print_heading(const char st[]){
@@ -203,11 +155,8 @@ void print_heading(const char st[]){
     gotoxy(45,8);printf("SRS : %s",st);
     SetColorAndBackground(17,15);
 }
-
 int conf_record(char id[]){
-   // left for you
-   //it checks whether the entered id for
-   //new record is already in the database.
+   /*it checks whether the entered id for new record is already in the database*/
 }
 
 void add_student(){
@@ -219,8 +168,7 @@ void add_student(){
     SetColor(45);
     if(fp == NULL){
         MessageBox(0,"Error in Opening file\nMake sure your file is not write protected","Warning",0);
-
-    }else{
+        }else{
         fflush(stdin);
         gotoxy(print,10);printf("ID: ");gets(stu.ID);
         //here you can confirms the ID
@@ -262,7 +210,7 @@ void search_student(){
         gotoxy(37,18);printf("Class: %d",stu.Class);
         gotoxy(37,19);printf("Phone No: %ld",stu.phone_no);
     }else{
-        gotoxy(37,12);printf("Sory, No record found in the database");
+        gotoxy(37,12);printf("Sorry, No record found in the database");
     }
     SetColor(28);
     fclose(fp);
@@ -302,10 +250,6 @@ void mod_student(){
     return;
 }
 
-//void gen_marksheet(){
-    //left for further enhancement
-//}
-
 void delete_student(){
     clearWindow();
     print_heading("Delete Record");
@@ -330,19 +274,20 @@ void delete_student(){
     SetColor(28);
     return;
 }
-
+/**
+ * @brief To display options at main window
+ * 
+ */
 void main_window(){
     int choice;
     SetColor(28);
     int x = 2;
     while(1){
         gotoxy(x,8);printf("1. Add Student");
-        gotoxy(x,10);printf("2. Search Student");
+        gotoxy(x,10); printf("2. Search Student");
         gotoxy(x,12);printf("3. Modify Student Record");
-        gotoxy(x,14);printf("4. Generate Marksheet");
-        gotoxy(x,16);printf("5. Delete Student Record");
-        gotoxy(x,18);printf("6. Change password");
-        gotoxy(x,20);printf("7. Exit");
+         gotoxy(x,14); printf("4. Delete Student Record");
+        gotoxy(x,16);printf("5. Exit");
         gotoxy(x,22);printf("Enter your choice: ");
         scanf("%d",&choice);
         switch(choice){
@@ -355,14 +300,10 @@ void main_window(){
             case 3:
                 mod_student();
                 break;
-            case 4:
-                break;
-            case 5:
+                case 4:
                 delete_student();
                 break;
-            case 6:
-                break;
-            case 7:
+                case 5:
                 exit(0);
                 break;
             default:
@@ -370,14 +311,11 @@ void main_window(){
         }
 
     }
-
 }
-
 int main(){
     ClearConsoleToColors(17,15);
-    SetConsoleTitle("Yerra sri Harsha Vardhan - Student Record System");
+    SetConsoleTitle(" Student Record System");
     window();
-    //use_pass_field();
     main_window();
     return 0;
 }
