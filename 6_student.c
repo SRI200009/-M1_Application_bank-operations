@@ -10,6 +10,7 @@
 #include <windows.h>
 
 
+
 struct student{
     char ID[15];
     char name[20];
